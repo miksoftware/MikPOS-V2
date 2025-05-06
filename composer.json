@@ -10,6 +10,7 @@
         "bezhansalleh/filament-shield": "^3.3",
         "blade-ui-kit/blade-icons": "*",
         "filament/filament": "*",
+        "filament/spatie-laravel-settings-plugin": "^3.2",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",

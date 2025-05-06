@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TipoDocumentosSeeder::class,
             MunicipiosSeeder::class,
             RolesAndPermissionsSeeder::class,
+            php artisan make:seeder DianPaymentMethodSeeder
         ]);
     }
 }
