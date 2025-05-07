@@ -34,7 +34,7 @@ class IngredienteResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user();
-        $esSuperAdmin = $user->hasRole('Super Admin'); // Ajusta según la lógica de roles que uses
+        $esSuperAdmin = $user->hasRole('Super Admin');
         $sucursalUsuario = $user->sucursal_id ?? null;
 
         return $form

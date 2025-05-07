@@ -62,4 +62,9 @@ class Ingrediente extends Model
     {
         return $this->belongsTo(Impuesto::class);
     }
+
+    public function detallesCompra()
+    {
+        return $this->morphMany(DetalleCompra::class, 'comprable');
+    }
 }

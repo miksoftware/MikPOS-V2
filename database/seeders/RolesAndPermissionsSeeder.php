@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -14,68 +13,22 @@ class RolesAndPermissionsSeeder extends Seeder
         // Resetea el caché de roles y permisos
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Crear permisos por módulo
-        $permissions = [
-            // Permisos para sucursales
-            'ver sucursales',
-            'crear sucursales',
-            'editar sucursales',
-            'eliminar sucursales',
-            
-            // Permisos para empresas
-            'ver empresas',
-            'crear empresas',
-            'editar empresas',
-            'eliminar empresas',
-            
-            // Permisos para departamentos
-            'ver departamentos',
-            'crear departamentos',
-            'editar departamentos',
-            'eliminar departamentos',
-            
-            // Permisos para municipios
-            'ver municipios',
-            'crear municipios',
-            'editar municipios',
-            'eliminar municipios',
-            
-            // Permisos para encargados
-            'ver encargados',
-            'crear encargados',
-            'editar encargados',
-            'eliminar encargados',
-        ];
+        // Crear el rol Super Admin
+        $superAdminRole = Role::firstOrCreate(['name' => 'Super Admin']);
 
-        // Crear los permisos
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
-
-        // Crear el rol de administrador y asignarle todos los permisos
-        $adminRole = Role::create(['name' => 'Administrador']);
-        $adminRole->givePermissionTo(Permission::all());
-
-        // Crear el rol de usuario normal
-        $userRole = Role::create(['name' => 'Usuario']);
-        $userRole->givePermissionTo(['ver sucursales']);
-
-        // Crear un usuario administrador por defecto
-        $admin = User::where('email', 'admin@mail.com')->first();
-        if (!$admin) {
-            $admin = User::create([
-                'name' => 'Administrador',
+        // Crear un usuario super admin por defecto
+        $superAdmin = User::firstOrCreate(
+            ['email' => 'admin@mail.com'],
+            [
+                'name' => 'Super Administrador',
                 'email' => 'admin@mail.com',
                 'password' => bcrypt('admin123'),
-            ]);
-        }
-        
-        $admin->assignRole('Administrador');
+            ]
+        );
 
-        // Si hay otros usuarios, asignarles el rol de usuario normal
-        $users = User::where('email', '!=', 'admin@mail.com')->get();
-        foreach ($users as $user) {
-            $user->assignRole('Usuario');
+        // Asignar el rol de Super Admin al usuario
+        if (!$superAdmin->hasRole('super_admin')) {
+            $superAdmin->assignRole('super_admin');
         }
     }
 }
